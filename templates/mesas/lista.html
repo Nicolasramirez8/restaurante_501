@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+{% block title %}Mesas{% endblock %}
+{% block content %}
+<div class="card">
+    <h2>🪑 Gestión de Mesas</h2>
+    <div class="table-responsive">
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Número Mesa</th>
+                    <th>Capacidad</th>
+                    <th>Estado</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for mesa in object_list %}
+                <tr>
+                    <td>{{ mesa.id }}</td>
+                    <td>Mesa {{ mesa.numero }}</td>
+                    <td>{{ mesa.capacidad }} personas</td>
+                    <td>
+                        {% if mesa.estado == 'libre' %}
+                            <span style="color:green;font-weight:bold;">🟢 {{ mesa.estado|upper }}</span>
+                        {% else %}
+                            <span style="color:red;font-weight:bold;">🔴 {{ mesa.estado|upper }}</span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        <button class="btn btn-primary" style="padding:5px 10px;">✏️</button>
+                        <button class="btn btn-danger" style="padding:5px 10px;">🗑️</button>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="5" style="text-align:center;padding:40px;color:#666;">
+                        No hay mesas configuradas 😢
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

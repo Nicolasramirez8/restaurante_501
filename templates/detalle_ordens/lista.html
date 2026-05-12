@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% block title %}Detalle Órdenes{% endblock %}
+{% block content %}
+<div class="card">
+    <h2>📄 Detalle de Órdenes</h2>
+    <div class="table-responsive">
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Orden #</th>
+                    <th>Plato</th>
+                    <th>Cantidad</th>
+                    <th>Precio Unit.</th>
+                    <th>Subtotal</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for detalle in object_list %}
+                <tr>
+                    <td>{{ detalle.id }}</td>
+                    <td>#{{ detalle.orden.id }}</td>
+                    <td>{{ detalle.plato.nombre }}</td>
+                    <td>{{ detalle.cantidad }}</td>
+                    <td>${{ detalle.precio_unitario|floatformat:0 }}</td>
+                    <td>${{ detalle.subtotal|floatformat:0 }}</td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="6" style="text-align:center;padding:40px;color:#666;">
+                        No hay detalles de órdenes 😢
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

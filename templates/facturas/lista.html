@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% block title %}Facturas{% endblock %}
+{% block content %}
+<div class="card">
+    <h2>💰 Gestión de Facturas</h2>
+    <div class="table-responsive">
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Factura #</th>
+                    <th>Cliente</th>
+                    <th>Orden</th>
+                    <th>Total</th>
+                    <th>Fecha</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for factura in object_list %}
+                <tr>
+                    <td>{{ factura.id }}</td>
+                    <td>FACT-{{ factura.id }}</td>
+                    <td>{{ factura.cliente.nombre }}</td>
+                    <td>#{{ factura.orden.id }}</td>
+                    <td>${{ factura.total|floatformat:0 }}</td>
+                    <td>{{ factura.fecha|date:"d/m/Y H:i" }}</td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="6" style="text-align:center;padding:40px;color:#666;">
+                        No hay facturas emitidas 😢
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

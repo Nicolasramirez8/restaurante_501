@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Restaurante 501{% endblock %}</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/estilos.css' %}">
+</head>
+<body>
+    {% if user.is_authenticated %}
+        <header>
+            <div class="container">
+                <div class="logo">🍽️ Restaurante 501</div>
+                <nav>
+                    <a href="/" class="btn btn-primary">📊 Dashboard</a>
+                    <a href="/clientes/" class="btn btn-primary">👥 Clientes</a>
+                    <a href="/platos/" class="btn btn-primary">🍽️ Platos</a>
+                    <a href="/empleados/" class="btn btn-primary">👨‍🍳 Empleados</a>
+                    <a href="/mesas/" class="btn btn-primary">🪑 Mesas</a>
+                    <a href="/ordenes/" class="btn btn-primary">📋 Órdenes</a>
+                    <a href="/facturas/" class="btn btn-primary">🧾 Facturas</a>
+                </nav>
+                <div>
+                    <span>👋 {{ user.username }}</span>
+                    <form method="post" action="/logout/" style="display:inline;">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-danger">Cerrar Sesión</button>
+                    </form>
+                </div>
+            </div>
+        </header>
+        <div class="container">
+    {% else %}
+        <div class="login-container">
+    {% endif %}
+
+        {% block content %}{% endblock %}
+
+    </div>
+</body>
+</html>

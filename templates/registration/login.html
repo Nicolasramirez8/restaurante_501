@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% block title %}Login{% endblock %}
+{% block content %}
+<div class="login-card card">
+    <h2>🔐 Administrador Restaurante</h2>
+    <form method="post">
+        {% csrf_token %}
+        <div class="form-group">
+            <label>👤 Usuario</label>
+            <input type="text" name="username" placeholder="admin / superuser" required>
+        </div>
+        <div class="form-group">
+            <label>🔑 Contraseña</label>
+            <input type="password" name="password" placeholder="Tu contraseña" required>
+        </div>
+        <button type="submit" class="btn btn-primary" style="width: 100%; padding: 15px;">🚀 Entrar al Sistema</button>
+    </form>
+</div>
+{% endblock %}
