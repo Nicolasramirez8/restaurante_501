@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% block title %}Eliminar Factura{% endblock %}
+{% block content %}
+<div class="card" style="max-width:500px; margin:0 auto; text-align:center;">
+    <h2>⚠️ Confirmar Eliminación</h2>
+    <p style="margin:20px 0; font-size:1.1em;">¿Estás seguro de eliminar la <strong>Factura #{{ objeto.id }}</strong> de la orden <strong>#{{ objeto.orden.id }}</strong>?</p>
+    <form method="post">
+        {% csrf_token %}
+        <div style="display:flex; gap:10px; justify-content:center;">
+            <button type="submit" class="btn btn-danger">🗑️ Sí, eliminar</button>
+            <a href="{% url 'facturas_lista' %}" class="btn btn-primary">❌ Cancelar</a>
+        </div>
+    </form>
+</div>
+{% endblock %}

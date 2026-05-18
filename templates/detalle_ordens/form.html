@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% block title %}{{ titulo }}{% endblock %}
+{% block content %}
+<div class="card" style="max-width:600px; margin:0 auto;">
+    <h2>📋 {{ titulo }}</h2>
+    <div style="margin-bottom:20px; padding:15px; background:#f8f9fa; border-radius:10px;">
+        <p><strong>Orden #{{ orden.id }}</strong> — {{ orden.cliente.nombre }} — Mesa {{ orden.mesa.numero_mesa }}</p>
+    </div>
+    <form method="post">
+        {% csrf_token %}
+        <div class="form-group">
+            <label>Plato</label>
+            <select name="plato" style="width:100%; padding:12px; border:2px solid #e9ecef; border-radius:10px; font-size:16px;">
+                {% for plato in platos %}
+                    <option value="{{ plato.pk }}">{{ plato.nombre_plato }} — $ {{ plato.precio|floatformat:0 }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="form-group">
+            <label>Cantidad</label>
+            <input type="number" name="cantidad" min="1" value="1" required>
+        </div>
+        <div style="display:flex; gap:10px; margin-top:20px;">
+            <button type="submit" class="btn btn-primary">💾 Agregar</button>
+            <a href="{% url 'detalle_orden_lista' orden.pk %}" class="btn btn-danger">❌ Cancelar</a>
+        </div>
+    </form>
+</div>
+{% endblock %}

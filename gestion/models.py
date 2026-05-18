@@ -83,7 +83,7 @@ class Orden(models.Model):
     cliente = models.ForeignKey(Cliente, on_delete=models.CASCADE)
     empleado = models.ForeignKey(Empleado, on_delete=models.CASCADE)
     mesa = models.ForeignKey(Mesa, on_delete=models.CASCADE)
-    fecha_hora = models.DateTimeField(auto_now_add=True)
+    fecha_hora = models.DateTimeField(blank=True, null=True)
     estado_orden = models.CharField(
         max_length=20,
         choices=ESTADOS_ORDEN,
@@ -151,7 +151,7 @@ class Factura(models.Model):
     ]
 
     orden = models.OneToOneField(Orden, on_delete=models.CASCADE)
-    fecha_factura = models.DateTimeField(auto_now_add=True)
+    fecha_factura = models.DateTimeField(blank=True, null=True)
     subtotal = models.DecimalField(max_digits=10, decimal_places=2)
     impuesto = models.DecimalField(max_digits=10, decimal_places=2)
     total_factura = models.DecimalField(max_digits=10, decimal_places=2)

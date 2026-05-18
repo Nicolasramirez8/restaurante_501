@@ -2,15 +2,19 @@
 {% block title %}Empleados{% endblock %}
 {% block content %}
 <div class="card">
-    <h2>👨‍🍳 Gestión de Empleados</h2>
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
+        <h2>👨‍🍳 Gestión de Empleados</h2>
+        <a href="{% url 'empleados_crear' %}" class="btn btn-primary">➕ Nuevo Empleado</a>
+    </div>
     <div class="table-responsive">
         <table>
             <thead>
                 <tr>
                     <th>ID</th>
-                    <th>Nombre Completo</th>
+                    <th>Nombre</th>
                     <th>Cargo</th>
-                    <th>Salario</th>
+                    <th>Teléfono</th>
+                    <th>Correo</th>
                     <th>Acciones</th>
                 </tr>
             </thead>
@@ -20,16 +24,17 @@
                     <td>{{ empleado.id }}</td>
                     <td>{{ empleado.nombre }}</td>
                     <td>{{ empleado.cargo }}</td>
-                    <td>${{ empleado.salario|floatformat:0 }}</td>
+                    <td>{{ empleado.telefono }}</td>
+                    <td>{{ empleado.correo }}</td>
                     <td>
-                        <button class="btn btn-primary" style="padding:5px 10px;">✏️</button>
-                        <button class="btn btn-danger" style="padding:5px 10px;">🗑️</button>
+                        <a href="{% url 'empleados_editar' empleado.pk %}" class="btn btn-primary" style="padding:5px 10px;">✏️ Editar</a>
+                        <a href="{% url 'empleados_eliminar' empleado.pk %}" class="btn btn-danger" style="padding:5px 10px;">🗑️ Eliminar</a>
                     </td>
                 </tr>
                 {% empty %}
                 <tr>
-                    <td colspan="5" style="text-align:center;padding:40px;color:#666;">
-                        No hay empleados contratados 😢
+                    <td colspan="6" style="text-align:center; padding:40px; color:#666;">
+                        No hay empleados registrados 😢
                     </td>
                 </tr>
                 {% endfor %}

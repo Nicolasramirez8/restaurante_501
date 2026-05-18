@@ -1,34 +1,50 @@
 {% extends 'base.html' %}
-{% block title %}Detalle Órdenes{% endblock %}
+{% block title %}Detalle Orden #{{ orden.id }}{% endblock %}
 {% block content %}
 <div class="card">
-    <h2>📄 Detalle de Órdenes</h2>
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
+        <h2>📋 Detalle Orden #{{ orden.id }}</h2>
+        <div style="display:flex; gap:10px;">
+            <a href="{% url 'detalle_orden_crear' orden.pk %}" class="btn btn-primary">➕ Agregar Plato</a>
+            <a href="{% url 'ordenes_lista' %}" class="btn btn-danger">⬅️ Volver</a>
+        </div>
+    </div>
+    <div style="margin-bottom:20px; padding:15px; background:#f8f9fa; border-radius:10px;">
+        <p><strong>Cliente:</strong> {{ orden.cliente.nombre }}</p>
+        <p><strong>Empleado:</strong> {{ orden.empleado.nombre }}</p>
+        <p><strong>Mesa:</strong> Mesa {{ orden.mesa.numero_mesa }}</p>
+        <p><strong>Fecha:</strong> {{ orden.fecha_hora|date:"d/m/Y H:i" }}</p>
+        <p><strong>Estado:</strong> {{ orden.estado_orden }}</p>
+        <p><strong>Total:</strong> $ {{ orden.total|floatformat:0 }}</p>
+    </div>
     <div class="table-responsive">
         <table>
             <thead>
                 <tr>
                     <th>ID</th>
-                    <th>Orden #</th>
                     <th>Plato</th>
                     <th>Cantidad</th>
-                    <th>Precio Unit.</th>
+                    <th>Precio unitario</th>
                     <th>Subtotal</th>
+                    <th>Acciones</th>
                 </tr>
             </thead>
             <tbody>
                 {% for detalle in object_list %}
                 <tr>
                     <td>{{ detalle.id }}</td>
-                    <td>#{{ detalle.orden.id }}</td>
-                    <td>{{ detalle.plato.nombre }}</td>
+                    <td>{{ detalle.plato.nombre_plato }}</td>
                     <td>{{ detalle.cantidad }}</td>
-                    <td>${{ detalle.precio_unitario|floatformat:0 }}</td>
-                    <td>${{ detalle.subtotal|floatformat:0 }}</td>
+                    <td>$ {{ detalle.precio_unitario|floatformat:0 }}</td>
+                    <td>$ {{ detalle.subtotal|floatformat:0 }}</td>
+                    <td>
+                        <a href="{% url 'detalle_orden_eliminar' detalle.pk %}" class="btn btn-danger" style="padding:5px 10px;">🗑️ Eliminar</a>
+                    </td>
                 </tr>
                 {% empty %}
                 <tr>
-                    <td colspan="6" style="text-align:center;padding:40px;color:#666;">
-                        No hay detalles de órdenes 😢
+                    <td colspan="6" style="text-align:center; padding:40px; color:#666;">
+                        No hay platos en esta orden 😢
                     </td>
                 </tr>
                 {% endfor %}

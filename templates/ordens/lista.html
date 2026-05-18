@@ -2,40 +2,55 @@
 {% block title %}Órdenes{% endblock %}
 {% block content %}
 <div class="card">
-    <h2>📋 Gestión de Órdenes</h2>
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
+        <h2>📋 Gestión de Órdenes</h2>
+        <a href="{% url 'ordenes_crear' %}" class="btn btn-primary">➕ Nueva Orden</a>
+    </div>
     <div class="table-responsive">
         <table>
             <thead>
                 <tr>
                     <th>ID</th>
-                    <th>Mesa</th>
                     <th>Cliente</th>
+                    <th>Empleado</th>
+                    <th>Mesa</th>
                     <th>Fecha</th>
                     <th>Total</th>
                     <th>Estado</th>
+                    <th>Acciones</th>
                 </tr>
             </thead>
             <tbody>
                 {% for orden in object_list %}
                 <tr>
                     <td>{{ orden.id }}</td>
-                    <td>{{ orden.mesa.numero }}</td>
                     <td>{{ orden.cliente.nombre }}</td>
-                    <td>{{ orden.fecha|date:"d/m/Y H:i" }}</td>
-                    <td>${{ orden.total|floatformat:0 }}</td>
+                    <td>{{ orden.empleado.nombre }}</td>
+                    <td>Mesa {{ orden.mesa.numero_mesa }}</td>
+                    <td>{{ orden.fecha_hora|date:"d/m/Y H:i" }}</td>
+                    <td>$ {{ orden.total|floatformat:0 }}</td>
                     <td>
-                        {% if orden.estado == 'pendiente' %}
-                            <span style="color:orange;font-weight:bold;">⏳ Pendiente</span>
-                        {% elif orden.estado == 'preparando' %}
-                            <span style="color:blue;font-weight:bold;">🔥 Preparando</span>
+                        {% if orden.estado_orden == 'Activa' %}
+                            <span style="color:green; font-weight:bold;">🟢 Activa</span>
+                        {% elif orden.estado_orden == 'En preparación' %}
+                            <span style="color:blue; font-weight:bold;">🔥 En preparación</span>
+                        {% elif orden.estado_orden == 'Entregada' %}
+                            <span style="color:orange; font-weight:bold;">🚀 Entregada</span>
+                        {% elif orden.estado_orden == 'Facturada' %}
+                            <span style="color:purple; font-weight:bold;">🧾 Facturada</span>
                         {% else %}
-                            <span style="color:green;font-weight:bold;">✅ Completada</span>
+                            <span style="color:red; font-weight:bold;">❌ Cancelada</span>
                         {% endif %}
+                    </td>
+                    <td>
+                        <a href="{% url 'detalle_orden_lista' orden.pk %}" class="btn btn-primary" style="padding:5px 10px;">📋 Detalle</a>
+                        <a href="{% url 'ordenes_editar' orden.pk %}" class="btn btn-primary" style="padding:5px 10px;">✏️ Editar</a>
+                        <a href="{% url 'ordenes_eliminar' orden.pk %}" class="btn btn-danger" style="padding:5px 10px;">🗑️ Eliminar</a>
                     </td>
                 </tr>
                 {% empty %}
                 <tr>
-                    <td colspan="6" style="text-align:center;padding:40px;color:#666;">
+                    <td colspan="8" style="text-align:center; padding:40px; color:#666;">
                         No hay órdenes registradas 😢
                     </td>
                 </tr>

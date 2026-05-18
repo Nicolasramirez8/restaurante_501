@@ -2,7 +2,10 @@
 {% block title %}Mesas{% endblock %}
 {% block content %}
 <div class="card">
-    <h2>🪑 Gestión de Mesas</h2>
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
+        <h2>🪑 Gestión de Mesas</h2>
+        <a href="{% url 'mesas_crear' %}" class="btn btn-primary">➕ Nueva Mesa</a>
+    </div>
     <div class="table-responsive">
         <table>
             <thead>
@@ -18,23 +21,25 @@
                 {% for mesa in object_list %}
                 <tr>
                     <td>{{ mesa.id }}</td>
-                    <td>Mesa {{ mesa.numero }}</td>
+                    <td>Mesa {{ mesa.numero_mesa }}</td>
                     <td>{{ mesa.capacidad }} personas</td>
                     <td>
-                        {% if mesa.estado == 'libre' %}
-                            <span style="color:green;font-weight:bold;">🟢 {{ mesa.estado|upper }}</span>
+                        {% if mesa.estado_mesa == 'Disponible' %}
+                            <span style="color:green; font-weight:bold;">🟢 Disponible</span>
+                        {% elif mesa.estado_mesa == 'Reservada' %}
+                            <span style="color:orange; font-weight:bold;">🟡 Reservada</span>
                         {% else %}
-                            <span style="color:red;font-weight:bold;">🔴 {{ mesa.estado|upper }}</span>
+                            <span style="color:red; font-weight:bold;">🔴 Ocupada</span>
                         {% endif %}
                     </td>
                     <td>
-                        <button class="btn btn-primary" style="padding:5px 10px;">✏️</button>
-                        <button class="btn btn-danger" style="padding:5px 10px;">🗑️</button>
+                        <a href="{% url 'mesas_editar' mesa.pk %}" class="btn btn-primary" style="padding:5px 10px;">✏️ Editar</a>
+                        <a href="{% url 'mesas_eliminar' mesa.pk %}" class="btn btn-danger" style="padding:5px 10px;">🗑️ Eliminar</a>
                     </td>
                 </tr>
                 {% empty %}
                 <tr>
-                    <td colspan="5" style="text-align:center;padding:40px;color:#666;">
+                    <td colspan="5" style="text-align:center; padding:40px; color:#666;">
                         No hay mesas configuradas 😢
                     </td>
                 </tr>

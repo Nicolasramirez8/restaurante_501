@@ -2,32 +2,43 @@
 {% block title %}Facturas{% endblock %}
 {% block content %}
 <div class="card">
-    <h2>💰 Gestión de Facturas</h2>
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
+        <h2>🧾 Gestión de Facturas</h2>
+        <a href="{% url 'facturas_crear' %}" class="btn btn-primary">➕ Nueva Factura</a>
+    </div>
     <div class="table-responsive">
         <table>
             <thead>
                 <tr>
                     <th>ID</th>
-                    <th>Factura #</th>
-                    <th>Cliente</th>
                     <th>Orden</th>
+                    <th>Cliente</th>
+                    <th>Subtotal</th>
+                    <th>Impuesto (19%)</th>
                     <th>Total</th>
+                    <th>Método de pago</th>
                     <th>Fecha</th>
+                    <th>Acciones</th>
                 </tr>
             </thead>
             <tbody>
                 {% for factura in object_list %}
                 <tr>
                     <td>{{ factura.id }}</td>
-                    <td>FACT-{{ factura.id }}</td>
-                    <td>{{ factura.cliente.nombre }}</td>
-                    <td>#{{ factura.orden.id }}</td>
-                    <td>${{ factura.total|floatformat:0 }}</td>
-                    <td>{{ factura.fecha|date:"d/m/Y H:i" }}</td>
+                    <td>Orden #{{ factura.orden.id }}</td>
+                    <td>{{ factura.orden.cliente.nombre }}</td>
+                    <td>$ {{ factura.subtotal|floatformat:0 }}</td>
+                    <td>$ {{ factura.impuesto|floatformat:0 }}</td>
+                    <td>$ {{ factura.total_factura|floatformat:0 }}</td>
+                    <td>{{ factura.metodo_pago }}</td>
+                    <td>{{ factura.fecha_factura|date:"d/m/Y H:i" }}</td>
+                    <td>
+                        <a href="{% url 'facturas_eliminar' factura.pk %}" class="btn btn-danger" style="padding:5px 10px;">🗑️ Eliminar</a>
+                    </td>
                 </tr>
                 {% empty %}
                 <tr>
-                    <td colspan="6" style="text-align:center;padding:40px;color:#666;">
+                    <td colspan="9" style="text-align:center; padding:40px; color:#666;">
                         No hay facturas emitidas 😢
                     </td>
                 </tr>

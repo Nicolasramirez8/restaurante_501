@@ -2,15 +2,19 @@
 {% block title %}Platos{% endblock %}
 {% block content %}
 <div class="card">
-    <h2>🍽️ Carta de Platos</h2>
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
+        <h2>🍽️ Carta de Platos</h2>
+        <a href="{% url 'platos_crear' %}" class="btn btn-primary">➕ Nuevo Plato</a>
+    </div>
     <div class="table-responsive">
         <table>
             <thead>
                 <tr>
                     <th>ID</th>
-                    <th>Nombre del Plato</th>
+                    <th>Nombre</th>
                     <th>Precio</th>
                     <th>Categoría</th>
+                    <th>Disponible</th>
                     <th>Acciones</th>
                 </tr>
             </thead>
@@ -18,17 +22,18 @@
                 {% for plato in object_list %}
                 <tr>
                     <td>{{ plato.id }}</td>
-                    <td>{{ plato.nombre }}</td>
-                    <td>${{ plato.precio|floatformat:0 }}</td>
+                    <td>{{ plato.nombre_plato }}</td>
+                    <td>$ {{ plato.precio|floatformat:0 }}</td>
                     <td>{{ plato.categoria }}</td>
+                    <td>{% if plato.disponible %}✅{% else %}❌{% endif %}</td>
                     <td>
-                        <button class="btn btn-primary" style="padding:5px 10px;">✏️</button>
-                        <button class="btn btn-danger" style="padding:5px 10px;">🗑️</button>
+                        <a href="{% url 'platos_editar' plato.pk %}" class="btn btn-primary" style="padding:5px 10px;">✏️ Editar</a>
+                        <a href="{% url 'platos_eliminar' plato.pk %}" class="btn btn-danger" style="padding:5px 10px;">🗑️ Eliminar</a>
                     </td>
                 </tr>
                 {% empty %}
                 <tr>
-                    <td colspan="5" style="text-align:center;padding:40px;color:#666;">
+                    <td colspan="6" style="text-align:center; padding:40px; color:#666;">
                         No hay platos en el menú 😢
                     </td>
                 </tr>

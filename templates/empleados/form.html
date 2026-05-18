@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% block title %}{{ titulo }}{% endblock %}
+{% block content %}
+<div class="card" style="max-width:600px; margin:0 auto;">
+    <h2>👨‍🍳 {{ titulo }}</h2>
+    <form method="post">
+        {% csrf_token %}
+        <div class="form-group">
+            <label>Nombre completo</label>
+            <input type="text" name="nombre" value="{{ objeto.nombre }}" required>
+        </div>
+        <div class="form-group">
+            <label>Cargo</label>
+            <select name="cargo" style="width:100%; padding:12px; border:2px solid #e9ecef; border-radius:10px; font-size:16px;">
+                <option value="Mesero" {% if objeto.cargo == 'Mesero' %}selected{% endif %}>Mesero</option>
+                <option value="Mesera" {% if objeto.cargo == 'Mesera' %}selected{% endif %}>Mesera</option>
+                <option value="Cajero" {% if objeto.cargo == 'Cajero' %}selected{% endif %}>Cajero</option>
+                <option value="Cajera" {% if objeto.cargo == 'Cajera' %}selected{% endif %}>Cajera</option>
+                <option value="Administrador" {% if objeto.cargo == 'Administrador' %}selected{% endif %}>Administrador</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label>Teléfono</label>
+            <input type="text" name="telefono" value="{{ objeto.telefono }}">
+        </div>
+        <div class="form-group">
+            <label>Correo electrónico</label>
+            <input type="email" name="correo" value="{{ objeto.correo }}">
+        </div>
+        <div style="display:flex; gap:10px; margin-top:20px;">
+            <button type="submit" class="btn btn-primary">💾 Guardar</button>
+            <a href="{% url 'empleados_lista' %}" class="btn btn-danger">❌ Cancelar</a>
+        </div>
+    </form>
+</div>
+{% endblock %}

@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% block title %}{{ titulo }}{% endblock %}
+{% block content %}
+<div class="card" style="max-width:600px; margin:0 auto;">
+    <h2>🪑 {{ titulo }}</h2>
+    <form method="post">
+        {% csrf_token %}
+        <div class="form-group">
+            <label>Número de mesa</label>
+            <input type="number" name="numero_mesa" value="{{ objeto.numero_mesa }}" min="1" required>
+        </div>
+        <div class="form-group">
+            <label>Capacidad (personas)</label>
+            <input type="number" name="capacidad" value="{{ objeto.capacidad }}" min="1" required>
+        </div>
+        <div class="form-group">
+            <label>Estado</label>
+            <select name="estado_mesa" style="width:100%; padding:12px; border:2px solid #e9ecef; border-radius:10px; font-size:16px;">
+                <option value="Disponible" {% if objeto.estado_mesa == 'Disponible' %}selected{% endif %}>🟢 Disponible</option>
+                <option value="Ocupada" {% if objeto.estado_mesa == 'Ocupada' %}selected{% endif %}>🔴 Ocupada</option>
+                <option value="Reservada" {% if objeto.estado_mesa == 'Reservada' %}selected{% endif %}>🟡 Reservada</option>
+            </select>
+        </div>
+        <div style="display:flex; gap:10px; margin-top:20px;">
+            <button type="submit" class="btn btn-primary">💾 Guardar</button>
+            <a href="{% url 'mesas_lista' %}" class="btn btn-danger">❌ Cancelar</a>
+        </div>
+    </form>
+</div>
+{% endblock %}

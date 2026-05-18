@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+{% block title %}{{ titulo }}{% endblock %}
+{% block content %}
+<div class="card" style="max-width:600px; margin:0 auto;">
+    <h2>📋 {{ titulo }}</h2>
+    <form method="post">
+        {% csrf_token %}
+        <div class="form-group">
+            <label>Cliente</label>
+            <select name="cliente" style="width:100%; padding:12px; border:2px solid #e9ecef; border-radius:10px; font-size:16px;">
+                {% for cliente in clientes %}
+                    <option value="{{ cliente.pk }}" {% if objeto.cliente.pk == cliente.pk %}selected{% endif %}>{{ cliente.nombre }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="form-group">
+            <label>Empleado</label>
+            <select name="empleado" style="width:100%; padding:12px; border:2px solid #e9ecef; border-radius:10px; font-size:16px;">
+                {% for empleado in empleados %}
+                    <option value="{{ empleado.pk }}" {% if objeto.empleado.pk == empleado.pk %}selected{% endif %}>{{ empleado.nombre }} - {{ empleado.cargo }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="form-group">
+            <label>Mesa</label>
+            <select name="mesa" style="width:100%; padding:12px; border:2px solid #e9ecef; border-radius:10px; font-size:16px;">
+                {% for mesa in mesas %}
+                    <option value="{{ mesa.pk }}" {% if objeto.mesa.pk == mesa.pk %}selected{% endif %}>Mesa {{ mesa.numero_mesa }} - {{ mesa.estado_mesa }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="form-group">
+            <label>Fecha y hora</label>
+            <input type="datetime-local" name="fecha_hora" value="{{ objeto.fecha_hora|date:'Y-m-d\TH:i' }}">
+        </div>
+        <div class="form-group">
+            <label>Estado</label>
+            <select name="estado_orden" style="width:100%; padding:12px; border:2px solid #e9ecef; border-radius:10px; font-size:16px;">
+                <option value="Activa" {% if objeto.estado_orden == 'Activa' %}selected{% endif %}>🟢 Activa</option>
+                <option value="En preparación" {% if objeto.estado_orden == 'En preparación' %}selected{% endif %}>🔥 En preparación</option>
+                <option value="Entregada" {% if objeto.estado_orden == 'Entregada' %}selected{% endif %}>🚀 Entregada</option>
+                <option value="Facturada" {% if objeto.estado_orden == 'Facturada' %}selected{% endif %}>🧾 Facturada</option>
+                <option value="Cancelada" {% if objeto.estado_orden == 'Cancelada' %}selected{% endif %}>❌ Cancelada</option>
+            </select>
+        </div>
+        <div style="display:flex; gap:10px; margin-top:20px;">
+            <button type="submit" class="btn btn-primary">💾 Guardar</button>
+            <a href="{% url 'ordenes_lista' %}" class="btn btn-danger">❌ Cancelar</a>
+        </div>
+    </form>
+</div>
+{% endblock %}

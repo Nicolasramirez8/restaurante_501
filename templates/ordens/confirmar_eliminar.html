@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% block title %}Eliminar Orden{% endblock %}
+{% block content %}
+<div class="card" style="max-width:500px; margin:0 auto; text-align:center;">
+    <h2>⚠️ Confirmar Eliminación</h2>
+    <p style="margin:20px 0; font-size:1.1em;">¿Estás seguro de eliminar la <strong>Orden #{{ objeto.id }}</strong> del cliente <strong>{{ objeto.cliente.nombre }}</strong>?</p>
+    <form method="post">
+        {% csrf_token %}
+        <div style="display:flex; gap:10px; justify-content:center;">
+            <button type="submit" class="btn btn-danger">🗑️ Sí, eliminar</button>
+            <a href="{% url 'ordenes_lista' %}" class="btn btn-primary">❌ Cancelar</a>
+        </div>
+    </form>
+</div>
+{% endblock %}

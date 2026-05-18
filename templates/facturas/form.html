@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% block title %}{{ titulo }}{% endblock %}
+{% block content %}
+<div class="card" style="max-width:600px; margin:0 auto;">
+    <h2>🧾 {{ titulo }}</h2>
+    <form method="post">
+        {% csrf_token %}
+        <div class="form-group">
+            <label>Orden</label>
+            <select name="orden" style="width:100%; padding:12px; border:2px solid #e9ecef; border-radius:10px; font-size:16px;">
+                {% for orden in ordenes %}
+                    <option value="{{ orden.pk }}">Orden #{{ orden.id }} — {{ orden.cliente.nombre }} — $ {{ orden.total|floatformat:0 }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="form-group">
+            <label>Método de pago</label>
+            <select name="metodo_pago" style="width:100%; padding:12px; border:2px solid #e9ecef; border-radius:10px; font-size:16px;">
+                <option value="Efectivo">💵 Efectivo</option>
+                <option value="Tarjeta">💳 Tarjeta</option>
+                <option value="Transferencia">🏦 Transferencia</option>
+                <option value="Nequi">📱 Nequi</option>
+                <option value="Daviplata">📱 Daviplata</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label>Fecha y hora</label>
+            <input type="datetime-local" name="fecha_factura">
+        </div>
+        <div style="display:flex; gap:10px; margin-top:20px;">
+            <button type="submit" class="btn btn-primary">💾 Generar Factura</button>
+            <a href="{% url 'facturas_lista' %}" class="btn btn-danger">❌ Cancelar</a>
+        </div>
+    </form>
+</div>
+{% endblock %}
