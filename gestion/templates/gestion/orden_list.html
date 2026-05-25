@@ -1,0 +1,55 @@
+{% extends 'gestion/base.html' %}
+{% block title %}- Órdenes{% endblock %}
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h4 class="fw-bold mb-0">📋 Órdenes</h4>
+    {% if rol == 'administrador' or rol == 'mesero' %}
+    <a href="{% url 'orden_create' %}" class="btn btn-primary btn-sm"><i class="bi bi-plus-lg"></i> Nueva orden</a>
+    {% endif %}
+</div>
+<div class="card">
+    <div class="card-body p-0">
+        <table class="table table-hover mb-0">
+            <thead class="table-light">
+                <tr><th>#</th><th>Cliente</th><th>Mesa</th><th>Empleado</th><th>Estado</th><th>Total</th><th></th></tr>
+            </thead>
+            <tbody>
+            {% for o in ordenes %}
+            <tr>
+                <td class="text-muted">{{ o.id }}</td>
+                <td class="fw-semibold">{{ o.cliente.nombre }}</td>
+                <td>Mesa {{ o.mesa.numero_mesa }}</td>
+                <td>{{ o.empleado.nombre }}</td>
+                <td>
+                    <span class="badge
+                        {% if o.estado_orden == 'Activa' %}bg-success
+                        {% elif o.estado_orden == 'Facturada' %}bg-primary
+                        {% elif o.estado_orden == 'Cancelada' %}bg-danger
+                        {% elif o.estado_orden == 'Entregada' %}bg-warning text-dark
+                        {% else %}bg-secondary{% endif %}">
+                        {{ o.estado_orden }}
+                    </span>
+                </td>
+                <td>${{ o.total }}</td>
+                <td class="text-end">
+                    <a href="{% url 'orden_detail' o.pk %}" class="btn btn-sm btn-outline-secondary">Ver</a>
+                   {% if rol == 'cajero' and o.estado_orden == 'Entregada' %}
+                    <a href="{% url 'factura_create_orden' o.pk %}" class="btn btn-sm btn-primary">Facturar</a>
+                    <a href="{% url 'cerrar_mesa' o.pk %}" class="btn btn-sm btn-outline-warning">Cerrar mesa</a>
+                    {% endif %}
+                    {% if rol == 'administrador' or rol == 'mesero' and o.estado_orden not in 'Facturada,Cancelada' %}
+                    <a href="{% url 'orden_edit' o.pk %}" class="btn btn-sm btn-outline-secondary">Editar</a>
+                    {% endif %}
+                    {% if rol == 'administrador' %}
+                    <a href="{% url 'orden_delete' o.pk %}" class="btn btn-sm btn-outline-danger">Eliminar</a>
+               {% endif %}
+                </td>
+            </tr>
+            {% empty %}
+            <tr><td colspan="7" class="text-center text-muted py-4">No hay órdenes registradas.</td></tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

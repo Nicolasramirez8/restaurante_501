@@ -1,0 +1,129 @@
+{% extends 'gestion/base.html' %}
+{% block title %}- Dashboard{% endblock %}
+{% block content %}
+<h4 class="mb-1 fw-bold">Dashboard</h4>
+<p class="text-muted mb-4">Bienvenido, {{ user.first_name|default:user.username }} 👋</p>
+
+{% if rol == 'administrador' %}
+<div class="row g-3 mb-4">
+    <div class="col-sm-6 col-lg-3">
+        <div class="stat-card bg-white">
+            <div class="d-flex justify-content-between align-items-start">
+                <div>
+                    <div class="stat-value text-dark">{{ total_clientes }}</div>
+                    <div class="stat-label">Clientes</div>
+                </div>
+                <div class="stat-icon" style="background:#fff3e0"><span>👥</span></div>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-6 col-lg-3">
+        <div class="stat-card bg-white">
+            <div class="d-flex justify-content-between align-items-start">
+                <div>
+                    <div class="stat-value text-dark">{{ total_mesas }}</div>
+                    <div class="stat-label">Mesas</div>
+                </div>
+                <div class="stat-icon" style="background:#e8f5e9"><span>🪑</span></div>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-6 col-lg-3">
+        <div class="stat-card bg-white">
+            <div class="d-flex justify-content-between align-items-start">
+                <div>
+                    <div class="stat-value text-dark">{{ ordenes_activas }}</div>
+                    <div class="stat-label">Órdenes activas</div>
+                </div>
+                <div class="stat-icon" style="background:#fce4ec"><span>📋</span></div>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-6 col-lg-3">
+        <div class="stat-card bg-white">
+            <div class="d-flex justify-content-between align-items-start">
+                <div>
+                    <div class="stat-value text-dark">${{ ingresos_hoy|floatformat:0 }}</div>
+                    <div class="stat-label">Ingresos hoy</div>
+                </div>
+                <div class="stat-icon" style="background:#e3f2fd"><span>💰</span></div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row g-3">
+    <div class="col-md-4"><a href="{% url 'cliente_list' %}" class="card p-3 d-flex flex-row align-items-center gap-3 text-decoration-none text-dark h-100">
+        <span style="font-size:2rem">👥</span><div><div class="fw-bold">Clientes</div><small class="text-muted">{{ total_clientes }} registrados</small></div>
+    </a></div>
+    <div class="col-md-4"><a href="{% url 'empleado_list' %}" class="card p-3 d-flex flex-row align-items-center gap-3 text-decoration-none text-dark h-100">
+        <span style="font-size:2rem">👤</span><div><div class="fw-bold">Empleados</div><small class="text-muted">{{ total_empleados }} registrados</small></div>
+    </a></div>
+    <div class="col-md-4"><a href="{% url 'plato_list' %}" class="card p-3 d-flex flex-row align-items-center gap-3 text-decoration-none text-dark h-100">
+        <span style="font-size:2rem">🍽️</span><div><div class="fw-bold">Menú</div><small class="text-muted">{{ total_platos }} platos</small></div>
+    </a></div>
+</div>
+
+{% elif rol == 'mesero' %}
+<div class="row g-3 mb-4">
+    <div class="col-sm-4">
+        <div class="stat-card bg-white">
+            <div class="stat-value text-success">{{ mesas_disponibles }}</div>
+            <div class="stat-label">Mesas disponibles</div>
+        </div>
+    </div>
+    <div class="col-sm-4">
+        <div class="stat-card bg-white">
+            <div class="stat-value text-danger">{{ mesas_ocupadas }}</div>
+            <div class="stat-label">Mesas ocupadas</div>
+        </div>
+    </div>
+    <div class="col-sm-4">
+        <div class="stat-card bg-white">
+            <div class="stat-value text-warning">{{ mis_ordenes }}</div>
+            <div class="stat-label">Órdenes en curso</div>
+        </div>
+    </div>
+</div>
+<div class="row g-3">
+    <div class="col-md-4"><a href="{% url 'mesa_list' %}" class="card p-3 d-flex flex-row align-items-center gap-3 text-decoration-none text-dark">
+        <span style="font-size:2rem">🪑</span><div><div class="fw-bold">Ver Mesas</div><small class="text-muted">Estado del salón</small></div>
+    </a></div>
+    <div class="col-md-4"><a href="{% url 'orden_create' %}" class="card p-3 d-flex flex-row align-items-center gap-3 text-decoration-none text-dark">
+        <span style="font-size:2rem">📋</span><div><div class="fw-bold">Nueva Orden</div><small class="text-muted">Registrar pedido</small></div>
+    </a></div>
+    <div class="col-md-4"><a href="{% url 'plato_list' %}" class="card p-3 d-flex flex-row align-items-center gap-3 text-decoration-none text-dark">
+        <span style="font-size:2rem">🍽️</span><div><div class="fw-bold">Ver Menú</div><small class="text-muted">Platos disponibles</small></div>
+    </a></div>
+</div>
+
+{% elif rol == 'cajero' %}
+<div class="row g-3 mb-4">
+    <div class="col-sm-4">
+        <div class="stat-card bg-white">
+            <div class="stat-value text-warning">{{ ordenes_pendientes }}</div>
+            <div class="stat-label">Órdenes por facturar</div>
+        </div>
+    </div>
+    <div class="col-sm-4">
+        <div class="stat-card bg-white">
+            <div class="stat-value text-primary">{{ facturas_hoy }}</div>
+            <div class="stat-label">Facturas hoy</div>
+        </div>
+    </div>
+    <div class="col-sm-4">
+        <div class="stat-card bg-white">
+            <div class="stat-value text-success">${{ ingresos_hoy|floatformat:0 }}</div>
+            <div class="stat-label">Ingresos hoy</div>
+        </div>
+    </div>
+</div>
+<div class="row g-3">
+    <div class="col-md-6"><a href="{% url 'orden_list' %}" class="card p-3 d-flex flex-row align-items-center gap-3 text-decoration-none text-dark">
+        <span style="font-size:2rem">📋</span><div><div class="fw-bold">Órdenes pendientes</div><small class="text-muted">Listas para facturar</small></div>
+    </a></div>
+    <div class="col-md-6"><a href="{% url 'factura_list' %}" class="card p-3 d-flex flex-row align-items-center gap-3 text-decoration-none text-dark">
+        <span style="font-size:2rem">🧾</span><div><div class="fw-bold">Historial de facturas</div><small class="text-muted">Ventas registradas</small></div>
+    </a></div>
+</div>
+{% endif %}
+{% endblock %}

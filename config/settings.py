@@ -79,11 +79,11 @@ DATABASES = {
         'NAME': 'restaurante_501',
         'USER': 'sa',
         'PASSWORD': '12345678',
-        'HOST': 'DESKTOP-5D2CHO1\\SQLEXPRESS',
-        'PORT': '1433',
-        'OPTIONS':{
+        'HOST': r'.\SQLEXPRESS',
+        'PORT': '',
+        'OPTIONS': {
             'driver': 'ODBC Driver 17 for SQL Server',
-            'extra_params': 'TrustServerCertificate=no',
+            'extra_params': 'TrustServerCertificate=yes',
         },
     }
 }
@@ -125,3 +125,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/6.0/howto/static-files/
 
 STATIC_URL = 'static/'
+LOGIN_URL = '/'
+LOGIN_REDIRECT_URL = '/dashboard/'
+SESSION_EXPIRE_AT_BROWSER_CLOSE = True
+

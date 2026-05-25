@@ -1,5 +1,22 @@
 from decimal import Decimal
 from django.db import models
+from django.contrib.auth.models import User
+
+
+class PerfilUsuario(models.Model):
+    ROLES = [
+        ('administrador', 'Administrador'),
+        ('mesero', 'Mesero'),
+        ('cajero', 'Cajero'),
+    ]
+    usuario = models.OneToOneField(User, on_delete=models.CASCADE, related_name='perfil')
+    rol = models.CharField(max_length=20, choices=ROLES, default='mesero')
+
+    class Meta:
+        db_table = 'PerfilUsuario'
+
+    def __str__(self):
+        return f"{self.usuario.username} - {self.rol}"
 
 
 class Cliente(models.Model):
@@ -123,13 +140,9 @@ class DetalleOrden(models.Model):
         db_table = 'Detalle_Orden'
 
     def save(self, *args, **kwargs):
-        # Calcular precio y subtotal
         self.precio_unitario = self.plato.precio
         self.subtotal = Decimal(self.cantidad) * self.precio_unitario
-
         super().save(*args, **kwargs)
-
-        # Actualizar total de la orden
         total_orden = sum(
             (detalle.subtotal or Decimal('0.00'))
             for detalle in self.orden.detalles.all()
